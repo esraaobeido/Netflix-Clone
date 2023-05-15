@@ -7,7 +7,7 @@ import './ModalMovie.css';
 
 function ModalMovie(props) {
   const { show, handleClose, movie, onMovieAdded } = props;
-  const [comment, setComment] = useState('');
+  const [comments, setComment] = useState('');
   const handleSubmit = async () => {
     try {
       const serverUrl = `${process.env.REACT_APP_SERVER_URL || "http://localhost:3004"}/getMovies`;
@@ -15,7 +15,7 @@ function ModalMovie(props) {
         id: movie.id,
         title: movie.title,
         poster_path: movie.poster_path,
-        comment: comment
+        comments: comments
       };
         await axios.post(serverUrl, data);
       handleClose();
@@ -35,7 +35,7 @@ function ModalMovie(props) {
         <Form.Control
           type="text"
           placeholder="Add a comment..."
-          value={comment}
+          value={comments}
           onChange={(event) => setComment(event.target.value)}
         />
       </Modal.Body>
