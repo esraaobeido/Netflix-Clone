@@ -9,7 +9,7 @@ function ModalMovie(props) {
   const { show, handleClose, movie, onMovieAdded } = props;
   const [comments, setComment] = useState('');
   const handleSubmit = async () => {
-      const serverUrl = `${process.env.REACT_APP_SERVER_URL || "http://localhost:3004"}/getMovies`;
+      const serverUrl = `${process.env.REACT_APP_SERVER_URL || "https://onlineserver-oznu.onrender.com"}/getMovies`;
       const data = {
         id: movie.id,
         title: movie.title,

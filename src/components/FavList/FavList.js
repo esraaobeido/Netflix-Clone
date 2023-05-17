@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import FavoriteModal from '../FavoriteModal/FavoriteModal';
+import { Form  } from 'react-router-dom';
 
 
 function FavList() {
@@ -15,14 +16,17 @@ function FavList() {
   useEffect(() => {
     fetchFavoriteMovies();
   }, []);
+  // useEffect(() => {
+  //   console.log(comments);
+  // }, [comments]);
 
   const fetchFavoriteMovies = async () => {
-    const response = await axios.get(`${process.env.REACT_APP_SERVER_URL || "http://localhost:3004"}/getMovies`);
+    const response = await axios.get(`${process.env.REACT_APP_SERVER_URL || "https://onlineserver-oznu.onrender.com"}/getMovies`);
     setFavoriteMovies(response.data);
   };
 
   const handleDeleteMovie = async (id) => {
-    await axios.delete(`${process.env.REACT_APP_SERVER_URL || "http://localhost:3004"}/delete/${id}`);
+    await axios.delete(`${process.env.REACT_APP_SERVER_URL || "https://onlineserver-oznu.onrender.com"}/delete/${id}`);
     fetchFavoriteMovies();
   };
 
@@ -39,10 +43,12 @@ function FavList() {
     fetchFavoriteMovies();
   };
 
-  const handleUpdateComments = async () => {
+  const handleUpdateComments = async (e) => {
+    e.preventDefault()
+    console.log(e.target.comment.value);
     await axios.put(
-      `${process.env.REACT_APP_SERVER_URL || "http://localhost:3004"}/update/${selectedMovie.id}`,
-      { comments }
+      `${process.env.REACT_APP_SERVER_URL || "https://onlineserver-oznu.onrender.com"}/update/${selectedMovie.id}`,
+      { comments:e.target.comment.value }
     );
     handleCloseUpdateModal();
   };
@@ -54,11 +60,16 @@ function FavList() {
           <Modal.Title>Update Comment</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <input type="text" value={comments} onChange={(e) => setComments(e.target.value)} />
+        {/* onChange={(e) => setComments(e.target.value)} */}
+        <form onSubmit={handleUpdateComments}>
+          <input type="text"  name='comment' />
+          <Button type='submit' variant="primary">Update</Button>
+
+        </form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseUpdateModal}>Cancel</Button>
-          <Button variant="primary" onClick={handleUpdateComments}>Update</Button>
+          {/* <Button variant="primary" onClick={(e)=>handleUpdateComments(e)}>Update</Button> */}
         </Modal.Footer>
       </Modal>
     );
