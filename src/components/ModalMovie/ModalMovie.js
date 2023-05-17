@@ -9,7 +9,6 @@ function ModalMovie(props) {
   const { show, handleClose, movie, onMovieAdded } = props;
   const [comments, setComment] = useState('');
   const handleSubmit = async () => {
-    try {
       const serverUrl = `${process.env.REACT_APP_SERVER_URL || "http://localhost:3004"}/getMovies`;
       const data = {
         id: movie.id,
@@ -17,13 +16,10 @@ function ModalMovie(props) {
         poster_path: movie.poster_path,
         comments: comments
       };
-        await axios.post(serverUrl, data);
+      await axios.post(serverUrl, data);
       handleClose();
       onMovieAdded();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+     };
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -36,16 +32,11 @@ function ModalMovie(props) {
           type="text"
           placeholder="Add a comment..."
           value={comments}
-          onChange={(event) => setComment(event.target.value)}
-        />
+          onChange={(event) => setComment(event.target.value)}/>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button className="custom-btn" variant="primary" onClick={handleSubmit}>
-          Add to favorites
-        </Button>
+        <Button variant="secondary" onClick={handleClose}>Close</Button>
+        <Button className="custom-btn" variant="primary" onClick={handleSubmit}>Add to favorites</Button>
       </Modal.Footer>
     </Modal>
   );
